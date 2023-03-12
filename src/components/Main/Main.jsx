@@ -9,7 +9,7 @@ import Chat from "../Chat/Chat";
 
 const Main = ({ socket, roomCode }) => {
   const [board, setBoard] = useState({
-    column1: ["", "", "", ""],
+    column1: [],
     column2: ["", "", "", ""],
     column3: ["", "", "", ""],
     column4: ["", "", "", ""],
@@ -23,9 +23,7 @@ const Main = ({ socket, roomCode }) => {
       "updateGame",
       (id) => {
         console.log("this is id", id);
-        const column = id.split(".")[1].split("[")[0];
-        const position = id.split(".")[1].split("[")[1][0];
-        updatedBoard[column][position] = "🟡";
+        updatedBoard.column1.push("Y");
         console.log("this is the Rival Board", updatedBoard);
         setBoard(updatedBoard);
         setCanPlay(true);
@@ -40,14 +38,47 @@ const Main = ({ socket, roomCode }) => {
     const { id } = e.currentTarget;
     const column = id.split(".")[1].split("[")[0];
     const position = id.split(".")[1].split("[")[1][0];
+    console.log(updatedBoard.column1.length);
 
-    if (canPlay && updatedBoard[column][position] === "") {
-      updatedBoard[column][position] = "🔴";
+    if (canPlay && updatedBoard.column1.length === 4) {
+      updatedBoard.column1.push("🔴");
       console.log("move made by player", updatedBoard);
       setBoard(updatedBoard);
       socket.emit("play", { id, column, position, roomCode });
       setCanPlay(false);
       checkWin(updatedBoard);
+    } else if (canPlay && updatedBoard.column1.length === 3) {
+      updatedBoard.column1.push("🔴");
+      console.log("move made by player", updatedBoard);
+      setBoard(updatedBoard);
+      socket.emit("play", { id, column, position, roomCode });
+      setCanPlay(false);
+      checkWin(updatedBoard);
+      console.log(updatedBoard.column1.length);
+    } else if (canPlay && updatedBoard.column1.length === 2) {
+      updatedBoard.column1.push("🔴");
+      console.log("move made by player", updatedBoard);
+      setBoard(updatedBoard);
+      socket.emit("play", { id, column, position, roomCode });
+      setCanPlay(false);
+      checkWin(updatedBoard);
+      console.log(updatedBoard.column1.length);
+    } else if (canPlay && updatedBoard.column1.length === 1) {
+      updatedBoard.column1.push("🔴");
+      console.log("move made by player", updatedBoard);
+      setBoard(updatedBoard);
+      socket.emit("play", { id, column, position, roomCode });
+      setCanPlay(false);
+      checkWin(updatedBoard);
+      console.log(updatedBoard.column1.length);
+    } else if (canPlay && updatedBoard.column1.length === 0) {
+      updatedBoard.column1.push("🔴");
+      console.log("move made by player", updatedBoard);
+      setBoard(updatedBoard);
+      socket.emit("play", { id, column, position, roomCode });
+      setCanPlay(false);
+      checkWin(updatedBoard);
+      console.log(updatedBoard.column1.length);
     }
   };
 
@@ -82,9 +113,8 @@ const Main = ({ socket, roomCode }) => {
         <Cell
           handleCellClick={handleCellClick}
           id="board.column1[3]"
-          text={board.column1[3]}
+          text={updatedBoard.column1[3]}
         />
-
         <Cell
           handleCellClick={handleCellClick}
           id="board.column2[0]"
