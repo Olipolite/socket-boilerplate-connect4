@@ -20,7 +20,7 @@ io.on("connection", (socket) => {
   socket.on("play", ({ roomCode, column, position, id }) => {
     console.log(`play at ${column}, cell ${position} at ${roomCode}`);
     console.log('this is id in server', id);
-    socket.broadcast.to(roomCode).emit("updateGame", id);
+    socket.broadcast.to(roomCode).emit("updateGame", id, column);
   });
 
   socket.on("send_message", (data) => {
