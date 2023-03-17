@@ -26,7 +26,7 @@ const Main = ({ socket, roomCode }) => {
       "updateGame",
       (id) => {
         console.log("this is id", id);
-        updatedBoard.column.push("Y");
+        updatedBoard.id = "Y";
         console.log("this is the Rival Board", updatedBoard);
         setBoard(updatedBoard);
         setCanPlay(true);
@@ -43,24 +43,24 @@ const Main = ({ socket, roomCode }) => {
     // const column = id.split(".")[1].split("[")[0];
     // const position = id.split(".")[1].split("[")[1][0];
     // return console.log(id, Object.entries(board)[id]);
+
+    // id.push("X");
     if (canPlay) {
-      console.log(column, "<------");
-      // id.push("X");
       for (let i = 0; i < column.length; i++) {
         if (column[i] === "") {
-          column[i] = "x";
+          column[i] = "X";
           return;
         }
+        setBoard({
+          ...board,
+          [`column${id}`]: [...column],
+        });
+        console.log(column, "<------");
+        socket.emit("play", { id, column, roomCode });
+        checkWin(updatedBoard);
+        setCanPlay(false);
       }
-      setBoard({
-        ...board,
-        [`column${id}`]: [...column],
-      });
     }
-    socket.emit("play", { id, column, position, roomCode });
-    setCanPlay(false);
-    checkWin(updatedBoard);
-    console.log(updatedBoard[column].length);
   };
 
   useEffect(() => console.log(board), [board]);
@@ -78,13 +78,12 @@ const Main = ({ socket, roomCode }) => {
       </div>
       <section className="main-section">
         {Object.entries(board).map((column, index) => {
-          return column[1].map((value) => {
+          return column[1].map((col) => {
             return (
-              <Cell
-                handleCellClick={handleCellClick}
-                id={index}
-                text={updatedBoard.column1[0]}
-              />
+              <div className="main-cell">
+                <Cell handleCellClick={handleCellClick} id={index} />
+                {col}
+              </div>
             );
           });
         })}
