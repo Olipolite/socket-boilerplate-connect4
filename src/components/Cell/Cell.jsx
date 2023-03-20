@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Cell.css";
 
-const Cell = ({ handleCellClick, id }) => {
-  return <div id={id} className="cell" onClick={handleCellClick}></div>;
+const Cell = ({ handleCellClick, id, text }) => {
+  return <div text={text} id={id} className="cell" onClick={handleCellClick}></div>;
 };
 
 Cell.propTypes = {
